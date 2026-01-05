@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Resume</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #222;
+            line-height: 1.4;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        .email {
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            border-bottom: 2px solid #444;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            font-size: 18px;
+        }
+
+        .item {
+            margin-bottom: 15px;
+        }
+
+        .title {
+            font-weight: bold;
+        }
+
+        .duration {
+            font-size: 12px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            margin-top: 5px;
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<h1 th:text="${resume.fullName}">Full Name</h1>
+<div class="email" th:text="${resume.email}">email@example.com</div>
+
+<!-- ================= EXPERIENCE ================= -->
+
+<h2>Experience</h2>
+
+<div th:each="exp : ${resume.experiences}" class="item">
+
+    <div class="title"
+         th:text="${exp.companyName} + ' | ' + ${exp.role}">
+        Company | Role
+    </div>
+
+    <div class="duration"
+         th:text="${exp.startDate} + ' - ' + (${exp.endDate} != null ? ${exp.endDate} : 'Present')">
+        Start - End
+    </div>
+
+    <ul>
+        <li th:each="b : ${exp.bullets}"
+            th:text="${b}">
+            Bullet point
+        </li>
+    </ul>
+
+</div>
+
+<!-- ================= EDUCATION ================= -->
+
+<h2>Education</h2>
+
+<div th:each="edu : ${resume.educations}" class="item">
+
+    <div class="title"
+         th:text="${edu.degree} + ' - ' + ${edu.institution}">
+        Degree - Institution
+    </div>
+
+    <div class="duration"
+         th:text="${edu.startYear} + ' - ' + ${edu.endYear}">
+        StartYear - EndYear
+    </div>
+
+</div>
+
+<!-- ================= SKILLS ================= -->
+
+<h2>Skills</h2>
+
+<p th:text="${#strings.listJoin(resume.skills, ', ')}">
+    Java, Spring Boot, Microservices
+</p>
+
+<!-- ================= CERTIFICATIONS ================= -->
+
+<h2 th:if="${resume.certifications != null and !resume.certifications.isEmpty()}">
+    Certifications
+</h2>
+
+<div th:each="cert : ${resume.certifications}" class="item">
+
+    <div th:text="${cert.name} + ' - ' + ${cert.issuer}">
+        Certification - Issuer
+    </div>
+
+</div>
+
+</body>
+</html>
