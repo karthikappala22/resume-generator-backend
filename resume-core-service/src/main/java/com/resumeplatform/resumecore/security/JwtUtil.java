@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -14,14 +15,14 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 🔐 256-bit secret key (DO NOT change length)
-   // private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-	
-	private static final String SECRET = "resume-app-super-secret-key-123456890";
-	
-	private static final Key key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+    private final Key key;
 
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
+
+    // ✅ Inject secret from application.properties / environment
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     // ✅ Generate token
     public String generateToken(String username) {
