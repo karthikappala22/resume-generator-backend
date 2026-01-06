@@ -1,21 +1,20 @@
+FROM maven:3.9.9-eclipse-temurin-17 AS build
+
+WORKDIR /app
+
+# Copy entire project
+COPY pom.xml .
+COPY resume-core-service resume-core-service
+
+# Build only core service
+RUN mvn -pl resume-core-service -am clean package -DskipTests
+
+# ---------- runtime image ----------
 FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-# Copy Maven wrapper and parent pom
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
+COPY --from=build /app/resume-core-service/target/resume-core-service-1.0.0-SNAPSHOT.jar app.jar
 
-# Give permission
-RUN chmod +x mvnw
-
-# Copy module
-COPY resume-core-service resume-core-service
-
-# Build only the required module
-RUN ./mvnw -pl resume-core-service -am clean package -DskipTests
-
-# Run the app
 EXPOSE 8080
-CMD ["java", "-jar", "resume-core-service/target/resume-core-service-1.0.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
