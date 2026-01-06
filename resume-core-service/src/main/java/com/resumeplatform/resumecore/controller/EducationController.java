@@ -17,7 +17,7 @@ public class EducationController {
 
     @PostMapping
     public ResponseEntity<String> addEducation(
-            @PathVariable Long resumeId,
+    		@PathVariable("resumeId") Long resumeId,
             @RequestBody Education education) {
     	
     	System.out.println("📥 Controller received request for resumeId = " + resumeId);
