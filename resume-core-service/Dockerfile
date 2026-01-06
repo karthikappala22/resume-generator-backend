@@ -2,19 +2,18 @@ FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-# Copy Maven wrapper and give execute permission
-COPY mvnw .
-COPY .mvn .mvn
+# Copy entire parent project (needed for multi-module build)
+COPY ../pom.xml ./pom.xml
+COPY ../resume-core-service ./resume-core-service
+COPY ../.mvn ./.mvn
+COPY ../mvnw ./mvnw
+
+# Give execute permission
 RUN chmod +x mvnw
 
-# Copy pom and download dependencies
-COPY pom.xml .
-RUN ./mvnw dependency:go-offline
+# Build only the core service module
+RUN ./mvnw -pl resume-core-service -am clean package -DskipTests
 
-# Copy source and build
-COPY src src
-RUN ./mvnw package -DskipTests
-
-# Run app
+# Run the jar
 EXPOSE 8080
-CMD ["java", "-jar", "target/resume-core-service-1.0.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "resume-core-service/target/resume-core-service-1.0.0-SNAPSHOT.jar"]
