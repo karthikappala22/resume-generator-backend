@@ -17,7 +17,7 @@ public class ExperienceController {
 
     @PostMapping
     public ResponseEntity<String> addExperience(
-            @PathVariable Long resumeId,
+    		@PathVariable("resumeId") Long resumeId,
             @RequestBody ExperienceRequest request) {
 
         experienceService.addExperience(resumeId, request);

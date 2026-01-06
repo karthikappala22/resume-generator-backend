@@ -20,7 +20,7 @@ public class SkillController {
 
     @PostMapping
     public ResponseEntity<String> addSkills(
-            @PathVariable Long resumeId,
+    		@PathVariable("resumeId") Long resumeId,
             @RequestBody SkillsRequest request) {
 
         skillService.addSkills(resumeId, request.getSkills());
@@ -29,7 +29,7 @@ public class SkillController {
     
     @PutMapping
     public ResponseEntity<Void> updateSkills(
-            @PathVariable Long resumeId,
+    		@PathVariable("resumeId") Long resumeId,
             @RequestBody SkillsRequest skills) {
 
         skillService.updateSkills(resumeId, skills.getSkills());

@@ -17,7 +17,7 @@ public class CertificationController {
 
     @PostMapping
     public ResponseEntity<String> addCertification(
-            @PathVariable Long resumeId,
+    		@PathVariable("resumeId") Long resumeId,
             @RequestBody Certification certification) {
 
         certificationService.addCertification(resumeId, certification);

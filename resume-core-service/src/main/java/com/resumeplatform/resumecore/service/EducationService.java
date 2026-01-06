@@ -29,24 +29,12 @@ public class EducationService {
 	public void addEducation(Long resumeId, Education education) {
 
 		User loggedInUser = userService.getLoggedInUser();
-		
-		System.out.println("Logged-in user ID = " + loggedInUser.getId()
-        + ", role = " + loggedInUser.getRole());
 
 		Resume resume = resumeRepository.findById(resumeId)
-		        .orElseThrow(() -> {
-		            System.out.println("❌ Resume not found for ID = " + resumeId);
-		            return new ResourceNotFoundException("Resume not found");
-		        });
+				.orElseThrow(() -> new ResourceNotFoundException("Resume not found"));
 
-		if (loggedInUser.getRole() != Role.ADMIN &&
-		        !resume.getUser().getId().equals(loggedInUser.getId())) {
-
-		    System.out.println("❌ ACCESS DENIED: loggedInUser="
-		            + loggedInUser.getId() + " resumeOwner="
-		            + resume.getUser().getId());
-
-		    throw new AccessDeniedException("You are not allowed to access this resume");
+		if (loggedInUser.getRole() != Role.ADMIN && !resume.getUser().getId().equals(loggedInUser.getId())) {
+			throw new AccessDeniedException("You are not allowed to access this resume");
 		}
 
 		// Relationship management

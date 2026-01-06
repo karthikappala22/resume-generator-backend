@@ -43,7 +43,7 @@ public class ResumeHtmlPdfController {
 	
 	@GetMapping("/{resumeId}/pdf")
 	@Transactional
-	public void downloadResumePdf(@PathVariable Long resumeId, HttpServletResponse response, HttpSession session) {
+	public void downloadResumePdf(@PathVariable("resumeId") Long resumeId, HttpServletResponse response, HttpSession session) {
 
 		User loggedInUser = userService.getLoggedInUser();
 

@@ -16,7 +16,7 @@ public class ResumeQueryController {
     }
 
     @GetMapping("/{resumeId}/full")
-    public ResponseEntity<ResumeResponse> getFullResume(@PathVariable Long resumeId) {
+    public ResponseEntity<ResumeResponse> getFullResume(@PathVariable("resumeId") Long resumeId) {
         return ResponseEntity.ok(resumeQueryService.getFullResume(resumeId));
     }
 }
