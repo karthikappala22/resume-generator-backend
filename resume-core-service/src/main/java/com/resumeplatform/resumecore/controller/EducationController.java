@@ -19,6 +19,8 @@ public class EducationController {
     public ResponseEntity<String> addEducation(
             @PathVariable Long resumeId,
             @RequestBody Education education) {
+    	
+    	System.out.println("📥 Controller received request for resumeId = " + resumeId);
 
         educationService.addEducation(resumeId, education);
         return ResponseEntity.ok("Education added successfully");
