@@ -23,7 +23,7 @@ public class SkillService {
         this.resumeRepository = resumeRepository;
 		this.userService = userService;
     }
-
+    @Transactional
     public void addSkills(Long resumeId, Iterable<String> skills) {
 
 		User loggedInUser = userService.getLoggedInUser();

@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 
 @Service
 public class HtmlToPdfService {
-
+	
     public byte[] generatePdf(String html) {
 
         try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {

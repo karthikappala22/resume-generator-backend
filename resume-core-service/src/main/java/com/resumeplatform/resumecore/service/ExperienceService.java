@@ -28,6 +28,7 @@ public class ExperienceService {
 		this.experienceRepository = experienceRepository;
 	}
 
+	@Transactional
 	public void addExperience(Long resumeId, ExperienceRequest request) {
 
 		User loggedInUser = userService.getLoggedInUser();

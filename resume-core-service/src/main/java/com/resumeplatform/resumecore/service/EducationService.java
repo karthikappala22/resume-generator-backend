@@ -25,7 +25,7 @@ public class EducationService {
 		this.educationRepository = educationRepository;
 		this.userService = userService;
 	}
-
+	@Transactional
 	public void addEducation(Long resumeId, Education education) {
 
 		User loggedInUser = userService.getLoggedInUser();

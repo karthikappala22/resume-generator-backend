@@ -2,7 +2,9 @@ package com.resumeplatform.resumecore.controller;
 
 import com.resumeplatform.resumecore.dto.ResumeResponse;
 import com.resumeplatform.resumecore.entity.Resume;
+import com.resumeplatform.resumecore.entity.Role;
 import com.resumeplatform.resumecore.entity.User;
+import com.resumeplatform.resumecore.exception.AccessDeniedException;
 import com.resumeplatform.resumecore.service.HtmlToPdfService;
 import com.resumeplatform.resumecore.service.ResumeQueryService;
 import com.resumeplatform.resumecore.repository.ResumeRepository;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -39,6 +42,7 @@ public class ResumeHtmlPdfController {
 
 	
 	@GetMapping("/{resumeId}/pdf")
+	@Transactional
 	public void downloadResumePdf(@PathVariable Long resumeId, HttpServletResponse response, HttpSession session) {
 
 		User loggedInUser = userService.getLoggedInUser();
@@ -47,8 +51,8 @@ public class ResumeHtmlPdfController {
 
 		ResumeResponse resume = resumeQueryService.getFullResume(resumeId);
 
-		if (!resume.getUserId().equals(loggedInUser.getId())) {
-			throw new RuntimeException("Access denied");
+		if (loggedInUser.getRole() != Role.ADMIN && !resume.getUserId().equals(loggedInUser.getId())) {
+			throw new AccessDeniedException("You are not allowed to access this resume");
 		}
 
 		Context context = new Context();

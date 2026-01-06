@@ -25,7 +25,7 @@ public class CertificationService {
 		this.userService = userService;
 		this.certificationRepository = certificationRepository;
 	}
-
+	@Transactional
 	public void addCertification(Long resumeId, Certification certification) {
 
 		User loggedInUser = userService.getLoggedInUser();
@@ -56,7 +56,8 @@ public class CertificationService {
 
 		certificationRepository.delete(cert);
 	}
-
+	
+	@Transactional
 	public void updateCertification(Long certificationId, Certification request) {
 
 		Certification certification = certificationRepository.findById(certificationId)

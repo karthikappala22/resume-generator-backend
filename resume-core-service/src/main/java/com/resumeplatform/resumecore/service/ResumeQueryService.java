@@ -23,7 +23,7 @@ public class ResumeQueryService {
 		this.resumeRepository = resumeRepository;
 		this.userService = userService;
 	}
-
+	@Transactional
 	public ResumeResponse getFullResume(Long resumeId) {
 
 		// 1️⃣ Get logged-in user
